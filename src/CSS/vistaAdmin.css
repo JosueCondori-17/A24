@@ -1,0 +1,402 @@
+/*ESTILO PARA ENCABEZADO */
+
+.header-admin {
+    width: 100%;
+    background-color: #cc292e;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0px;
+    font-size: 40px;
+    font-weight: bold;
+    font-style: italic;
+    color: white;
+}
+
+/*ESTILO PARA EL LOGIN*/
+
+.caja-login {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 0px;
+}
+
+.login {
+    width: auto;
+    border: 2px solid #cc292e;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login input {
+    margin: 10px 0px;
+    padding: 10px 10px;
+    border-radius: 5px;
+    border: 1px solid #2f9edf;
+}
+.login input:focus{
+	border: 3px solid #4f5eeb;
+	outline: none;
+	box-shadow: 3px 0px 30px rgba(163,163,163, 0.4);
+}
+
+.login p {
+    font-weight: bold;
+    color: #3a6adb;
+}
+
+.btn {
+    padding: 10px 0px;
+    border-radius: 10px;
+    background-color: #cc292e;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+}
+
+.btn:hover {
+    transition: 0.3s ease;
+    cursor: pointer;
+    background-color: #ca3f3f;
+}
+
+/*ESTILOS PARA EL NAV DE GESTIÓN*/
+hr {
+    border: none;
+}
+
+.header-gestion {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.link-g {
+    text-decoration: none;
+    padding: 10px;
+    flex-grow: 1;
+    color: #a34242;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.link-g:hover {
+    text-decoration: none;
+    padding: 10px;
+    flex-grow: 1;
+    color: #a34242;
+    font-weight: bold;
+    border-bottom: 3px solid #f59c9c;
+}
+
+.activado-g {
+    transition: 0.5s ease;
+    text-decoration: none;
+    padding: 10px;
+    flex-grow: 1;
+    color: #a34242;
+    font-weight: bold;
+    background-color: #f59c9c;
+    border-radius: 0px 0px 10px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon-admin {
+    width: 25px;
+}
+
+/*ESTILO PARA EL PANEL DE GESTIÓN*/
+
+.seccion-gestion {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0px;
+}
+
+/*ESTILO PARA LA TABLA CRUD */
+
+.caja-crud {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0px 0px 20px;
+    gap: 20px;
+    padding-bottom: 100px;
+}
+.caja-crud-admin {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0px 0px 20px;
+    gap: 20px;
+}
+.caja-crud-2{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0px 0px 20px;
+    gap: 20px;
+    padding-bottom: 150px;
+}
+
+.icon-crud {
+    width: 20px;
+}
+
+.tabla-crud th {
+    padding: 10px 30px;
+    background-color: #a8d4e6;
+}
+
+.column-crud {
+    border-top: 0.2px solid #cdcde4;
+    padding: 10px 30px;
+}
+
+/*ESTILO PARA LOS BOTONES CRUD*/
+.caja-update-delete {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-create {
+    background-color: #08be08;
+    color: white;
+    font-weight: 800;
+    padding: 10px 20px;
+    border-radius: 5px;
+    gap: 10px;
+    border: none;
+}
+
+.btn-edit {
+    background-color: #2f9edf;
+    color: white;
+    font-weight: 800;
+    padding: 5px 10px;
+    border-radius: 5px;
+    gap: 10px;
+    border: none;
+}
+
+.btn-delete {
+    background-color: #d45454;
+    color: white;
+    font-weight: 800;
+    padding: 5px 10px;
+    border-radius: 5px;
+    gap: 10px;
+    border: none;
+}
+
+/*ESTILO PARA DIALOGS CREAR CATEGORÍA */
+.p-dialog-mask.p-dialog-center{
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-create {
+    background-color: white;
+    width: 400px;
+    padding: 20px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+}
+
+.head-dialog-create {
+    display: flex;
+    flex-direction: column;
+    color: #e61b21;
+    padding-bottom: 20px ;
+}
+
+.body-dialog-create {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-bottom: 20px;
+}
+.body-dialog-create label{
+    color: #e61b21;
+}
+.body-dialog-create input{
+    padding: 10px 10px;
+    border: 1px solid #cc292e;
+    border-radius: 5px;
+}
+
+.footer-dialog-create {
+    display: flex;
+    justify-content: end;
+    padding-bottom: 20px;
+    gap: 10px;
+}
+.btn-cancelar-dialog{
+    padding: 10px 20px;
+    font-weight: bold;
+    color: #1a4cd6;
+    background-color: white;
+    border-radius: 5px;
+    border: 0.5px solid #2f9edf;
+}
+.btn-cancelar-dialog:hover{
+    transition: 0.3s ease;
+    background-color: #1a4cd6;
+    color: white;
+    
+}
+.btn-crear-dialog{
+    padding: 10px 20px;
+    font-weight: bold;
+    color: white;
+    background-color: #1a4cd6;
+    border-radius: 5px;
+    border: 0.5px solid #2f9edf;
+}
+.btn-crear-dialog:hover{
+    transition: 0.3s ease;
+    background-color: #1d43aa;
+    color: white;
+    
+}
+
+/*ESTILOS PARA TOAST*/
+.toast-correct{
+    background-color: white;
+    height: auto;
+    border-radius: 5px;
+    border-left: 10px solid #79bd79;
+    padding: 0px 20px;
+}
+/*ESTILO PARA DIALOGS CREAR PRODUCTO */
+
+.dialog-crud-producto{
+    background-color: white;
+    width: 500px;
+    padding: 20px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+}
+.body-dialog-crud-producto{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-bottom: 20px;
+}
+.dialog-dato-producto{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 5px;
+}
+.body-dialog-crud-producto label{
+    color: #e61b21;
+}
+.body-dialog-crud-producto input{
+    padding: 10px 10px;
+    border: 1px solid #cc292e;
+    border-radius: 5px;
+}
+.select{
+    border: 2px solid #a8d4e6;
+    padding: 7px;
+    border-radius: 5px;
+}
+.p-dropdown-item{
+    background-color: white;
+    padding: 5px;
+}
+.dialog-dato-producto-img{
+    display: flex;
+    flex-direction: row;
+}
+.div-img-select{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.input-img{
+    background-color: #a8d4e6;
+    border: none !important;
+    color: #1a4cd6 !important;
+    font-weight: 800;
+}
+#file-upload-button{
+    background-color: blue !important;
+}
+.div-img{
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    width: auto;
+    padding: 0px 0px 0px 10px;
+}
+
+/*ESTILOS PARA LA SECCIÓN DE LISTA DE PEDIDOD*/
+.panel-pedido{
+    border: 2px solid black;
+    width: 100%;
+    padding: 10px 0px;
+    height: auto;
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+}
+.box-estado-pedido{
+    border: 2px solid blue;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-left: 20px;
+}
+.box-pedidos{
+    border: 2px solid green;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+}
+.pedido-item{
+    border: 2px solid red;
+}
+/*ESTILOS PARA EL FOOTER DE ADMIN*/
+.footer-container-admin{
+    background-color: #cc292e;
+    width: 100%;
+    padding: 20px 0px;
+    display: flex;
+    justify-content: center;
+}
+.footer-container-admin div{
+    width: 95%;
+    display: flex;
+    justify-content: end;
+    position: static;
+}
+.btn-close-sesion{
+    border: none;
+    background-color: #cc292e;
+    color: white;
+    font-weight: bold;
+}
