@@ -35,7 +35,7 @@ export const Footer = () => {
     <div className='foo-lista'>
       <h2>Categorías</h2>
       {categorias.map(item =>{
-        return <li key={item.id}>{item.nombre} </li>
+        return <li key={item.id}>{item.label} </li>
       })}
       
     </div>

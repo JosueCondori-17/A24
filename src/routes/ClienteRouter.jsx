@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense, useEffect, useContext } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 const Ofertas = lazy(() => import('../components/VistaCliente/Ofertas'));
@@ -10,6 +10,11 @@ import { Footer } from '../components/VistaCliente/Footer';
 import { HeaderNav } from '../components/VistaCliente/HeaderNav';
 
 export const ClienteRouter = () => {
+
+    useEffect(()=>{
+        localStorage.removeItem('user');
+    })
+
     return (
         <>  
             <HeaderNav />

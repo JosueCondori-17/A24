@@ -39,12 +39,12 @@ export const CrudOferta = () => {
       reader.readAsDataURL(file);
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     setPreview(null);
   }, [selectedFile]);
 
   //CAMPOS GENERALES
-  const [idOferta, setIdOferta]= useState(0);
+  const [idOferta, setIdOferta] = useState(0);
   const [nombreOferta, setNombreOferta] = useState("");
   const [precio, setPrecio] = useState("");
   const [stock, setStock] = useState("");
@@ -94,7 +94,7 @@ export const CrudOferta = () => {
     formData.append("imagen", selectedFile)
     formData.append("precio", precio)
     formData.append("descripcion", descripcion)
-    formData.append("stock", stock)  
+    formData.append("stock", stock)
 
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/ofertas', formData);
@@ -112,23 +112,28 @@ export const CrudOferta = () => {
   }
   //CRUD - EDITAR
   const [visibleEdit, setVisibleEdit] = useState(false);
-  const actualizarCategoria = async () => {
-    const id = idCategoria;
-    const data =
-    {
-      "nombre": nombreCategoria
+  const actualizarOferta = async () => {
+    const id = idOferta;
+    const formData = new FormData()
+    formData.append("nombre", nombreOferta)
+    formData.append("precio", precio)
+    formData.append("descripcion", descripcion)
+    formData.append("stock", stock)
+    if (selectedFile instanceof File) {
+      formData.append("imagen", selectedFile);
     }
+
     try {
-      const response = await axios.put(`http://127.0.0.1:8000/api/categorias/${id}`, data);
-      console.log('Categoría actualizada:', response.data);
-      getCategorias();
+      const response = await axios.post(`http://127.0.0.1:8000/api/ofertas/${id}`, formData);
+      console.log('Oferta Creada:', response.data);
+      getOfertas();
       showToast(
         "success",
-        "Categoría Actualizada",
-        `Se actualizó categoría ${nombreCategoria} correctamente`
+        "Oferta Actualizada",
+        `Se actualizó ${nombreOferta} correctamente`
       );
     } catch (error) {
-      console.error('Error al actualizar categoría:', error);
+      console.error('Error al actualizar oferta:', error);
     }
   }
   //CRUD - DELETE
@@ -154,8 +159,8 @@ export const CrudOferta = () => {
       <div className='caja-update-delete'>
         <Button
           onClick={() => {
-            setVisibleEdit(true); 
-            setIdOferta(data.id); 
+            setVisibleEdit(true);
+            setIdOferta(data.id);
             setNombreOferta(data.nombre);
             setSelectedFile(data.imagen);
             setPrecio(data.precio);
@@ -163,7 +168,7 @@ export const CrudOferta = () => {
             setStock(data.stock);
           }}
           className='btn-edit'>
-          <img className='icon-crud' src={iconEditar} alt="btn-edit" /> Editar
+          <i className="pi pi-pencil"></i>
         </Button>
         <Button
           onClick={() => {
@@ -172,7 +177,7 @@ export const CrudOferta = () => {
             setNombreOferta(data.nombre);
           }}
           className='btn-delete'>
-          <img className='icon-crud' src={iconEliminar} alt="btn-delete" /> Eliminar
+          <i className="pi pi-trash"></i>
         </Button>
       </div>
     )
@@ -182,17 +187,37 @@ export const CrudOferta = () => {
       <img width="40px" src={data.imagen} alt={data.nombre} />
     )
   }
-
+  const [globalFilter, setGlobalFilter] = useState('');
+  const getHeader = () => {
+     return (
+           <div style={{padding:"5px", display:"flex", justifyContent:"end", alignItems:"center"}}>
+              <i className="pi pi-search"></i>
+              <InputText style={{ textAlign: 'left', padding:"5px", marginLeft:"10px" }}
+                 type="search"
+                 onInput={(e) => setGlobalFilter(e.target.value)}
+                 placeholder="Buscar oferta" />
+           </div>
+     );
+  };
+  let header = getHeader();
 
   return (
     <>
       <Toast className='toast-correct' ref={toast} />
       <div className="caja-crud-admin">
         <div className='crear-button'>
-          <Button onClick={() => setVisible(true)} className='btn-create'> <img className='icon-crud' src={iconCrear} alt="btn-create" /> Crear Oferta</Button>
+          <Button onClick={() => setVisible(true)} className='btn-create'><i className="pi pi-plus"></i>  Crear Oferta</Button>
         </div>
         <div className='tabla'>
-          <DataTable className="tabla-crud" value={ofertas} tableStyle={{ minWidth: '50rem' }}>
+          <DataTable
+          globalFilter={globalFilter}
+          header={header}
+          scrollable
+          paginator rows={4}
+          scrollHeight="300px" 
+          className="tabla-crud" 
+          value={ofertas} 
+          tableStyle={{ minWidth: '50rem' }}>
             <Column className="column-crud" header="ID" field="id" ></Column>
             <Column className="column-crud" header="Nombre" field="nombre" ></Column>
             <Column className="column-crud" header="Imagen" body={(e) => mostrarImg(e)}></Column>
@@ -205,200 +230,208 @@ export const CrudOferta = () => {
       </div>
 
       {/*DIALOG CREAR */}
-        <Dialog className='dialog-crud-producto' visible={visible} onHide={() => setVisible(false)}>
-          <div className='head-dialog-create'>
-            <h2>Crea una Oferta</h2>
+      <Dialog
+        className='dialog-crud-producto'
+        visible={visible}
+        onHide={() => setVisible(false)}
+        header={<div ><h2>Crea una Oferta</h2></div>}
+        footer={<div className='footer-dialog-create'>
+
+          <Button
+            className='btn-cancelar-dialog'
+            label='Cancelar'
+            onClick={() => {
+              setVisible(false); deleteCampos();
+            }}>
+          </Button>
+          <Button className='btn-crear-dialog' label='Crear'
+            onClick={() => {
+              setVisible(false);
+              crearOferta();
+              deleteCampos();
+            }}>
+          </Button>
+        </div>}
+      >
+        <div className='body-dialog-crud-producto'>
+          <div className='dialog-dato-producto'>
             <p>En esta sección podrás crear ofertas para tu tienda.</p>
+            <label>Título de tu oferta:</label>
+            <InputText value={nombreOferta}
+              type='text'
+              placeholder='Ingrese nombre de la Oferta'
+              onChange={(e) => setNombreOferta(e.target.value)}
+            > </InputText>
           </div>
-          <div className='body-dialog-crud-producto'>
-            <div className='dialog-dato-producto'>
-              <label>Nombre del producto:</label>
-              <InputText value={nombreOferta}
-                type='text'
-                placeholder='Ingrese nombre de la Oferta'
-                onChange={(e) => setNombreOferta(e.target.value)}
-              > </InputText>
+          <div className='dialog-dato-producto'>
+            <label>Precio:</label>
+            <InputText value={precio}
+              type='number'
+              placeholder='Ingrese precio a disponer'
+              onChange={(e) => setPrecio(e.target.value)}
+            > </InputText>
+          </div>
+          <div className='dialog-dato-producto'>
+            <label>Stock:</label>
+            <InputText value={stock}
+              type='number'
+              placeholder='Ingrese el stock de la Oferta'
+              onChange={(e) => setStock(e.target.value)}
+            > </InputText>
+          </div>
+          <div className='dialog-dato-producto'>
+            <label>Descripción:</label>
+            <InputText value={descripcion}
+              type='text'
+              placeholder='Ingrese la descripción de la oferta '
+              onChange={(e) => setDescripcion(e.target.value)}
+            > </InputText>
+          </div>
+          <div className='dialog-dato-producto'>
+            <div className='div-img-select'>
+              <label>Imagen de la Oferta:</label>
+              <input
+                className='input-img'
+                type="file"
+                id="fileInput"
+                accept="image/*"
+                onChange={onFileChange}>
+              </input>
             </div>
-            <div className='dialog-dato-producto'>
-              <label>Precio:</label>
-              <InputText value={precio}
-                type='number'
-                placeholder='Ingrese precio a disponer'
-                onChange={(e) => setPrecio(e.target.value)}
-              > </InputText>
-            </div>
-            <div className='dialog-dato-producto'>
-              <label>Stock:</label>
-              <InputText value={stock}
-                type='number'
-                placeholder='Ingrese el stock de la Oferta'
-                onChange={(e) => setStock(e.target.value)}
-              > </InputText>
-            </div>
-            <div className='dialog-dato-producto'>
-              <label>Descripción:</label>
-              <InputText value={descripcion}
-                type='text'
-                placeholder='Ingrese la descripción de la oferta '
-                onChange={(e) => setDescripcion(e.target.value)}
-              > </InputText>
-            </div>
-            <div className='dialog-dato-producto'>
-              <div className='div-img-select'>
-                <label>Imagen de la Oferta:</label>
-                <input
-                  className='input-img'
-                  type="file" 
-                  id="fileInput"
-                  accept="image/*"
-                  onChange={onFileChange}>
-                </input>
-              </div>
-              <div className='div-img'>
+            <div className='div-img'>
               {preview !== null ? (
+                <img
+                  src={preview}
+                  alt="Vista previa"
+                  style={{ width: '80px', objectFit: 'cover' }}
+                />
+              ) : (
+                selectedFile && (
                   <img
-                    src={preview}
+                    src={selectedFile}
                     alt="Vista previa"
                     style={{ width: '80px', objectFit: 'cover' }}
                   />
-                ) : (
-                  selectedFile && (
-                    <img
-                      src={selectedFile}
-                      alt="Vista previa"
-                      style={{ width: '80px', objectFit: 'cover' }}
-                    />
-                  )
-                )}
-              </div>
-
+                )
+              )}
             </div>
 
           </div>
-          <div className='footer-dialog-create'>
 
-            <Button
-              className='btn-cancelar-dialog'
-              label='Cancelar'
-              onClick={() => {
-                setVisible(false); deleteCampos();
-                }}>
-            </Button>
-            <Button className='btn-crear-dialog' label='Crear'
-              onClick={() => { 
-                setVisible(false); 
-                crearOferta();
-                deleteCampos();
-                }}>
-            </Button>
-          </div>
-        </Dialog>
+        </div>
+
+      </Dialog>
 
       {/*DIALOG EDITAR*/}
-      <Dialog className='dialog-crud-producto' visible={visibleEdit} onHide={() => {setVisibleEdit(false), deleteCampos()}}>
-          <div className='head-dialog-create'>
-            <h2>Actualiza {nombreOferta}</h2>
+      <Dialog
+        className='dialog-crud-producto'
+        visible={visibleEdit}
+        onHide={() => { setVisibleEdit(false), deleteCampos() }}
+        header={<div><h2>Actualiza {nombreOferta}</h2></div>}
+        footer={<div className='footer-dialog-create'>
+          <Button
+            className='btn-cancelar-dialog'
+            label='Cancelar'
+            onClick={() => {
+              setVisibleEdit(false); deleteCampos();
+            }}>
+          </Button>
+          <Button className='btn-crear-dialog' label='Actualizar'
+            onClick={() => {
+              setVisibleEdit(false);
+              actualizarOferta();
+              deleteCampos();
+            }}>
+          </Button>
+        </div>}
+      >
+        <div className='body-dialog-crud-producto'>
+          <div className='dialog-dato-producto'>
             <p>En esta sección podrás editar las ofertas de tu tienda.</p>
+            <label>Título de tu oferta:</label>
+            <InputText value={nombreOferta}
+              type='text'
+              placeholder='Ingrese nombre de la Oferta'
+              onChange={(e) => setNombreOferta(e.target.value)}
+            > </InputText>
           </div>
-          <div className='body-dialog-crud-producto'>
-            <div className='dialog-dato-producto'>
-              <label>Nombre del producto:</label>
-              <InputText value={nombreOferta}
-                type='text'
-                placeholder='Ingrese nombre de la Oferta'
-                onChange={(e) => setNombreOferta(e.target.value)}
-              > </InputText>
+          <div className='dialog-dato-producto'>
+            <label>Precio:</label>
+            <InputText value={precio}
+              type='number'
+              placeholder='Ingrese precio a disponer'
+              onChange={(e) => setPrecio(e.target.value)}
+            > </InputText>
+          </div>
+          <div className='dialog-dato-producto'>
+            <label>Stock:</label>
+            <InputText value={stock}
+              type='number'
+              placeholder='Ingrese el stock de la Oferta'
+              onChange={(e) => setStock(e.target.value)}
+            > </InputText>
+          </div>
+          <div className='dialog-dato-producto'>
+            <label>Descripción:</label>
+            <InputText value={descripcion}
+              type='text'
+              placeholder='Ingrese la descripción de la oferta '
+              onChange={(e) => setDescripcion(e.target.value)}
+            > </InputText>
+          </div>
+          <div className='dialog-dato-producto'>
+            <div className='div-img-select'>
+              <label>Imagen de la Oferta:</label>
+              <input
+                className='input-img'
+                type="file"
+                id="fileInput"
+                accept="image/*"
+                onChange={onFileChange}>
+              </input>
             </div>
-            <div className='dialog-dato-producto'>
-              <label>Precio:</label>
-              <InputText value={precio}
-                type='number'
-                placeholder='Ingrese precio a disponer'
-                onChange={(e) => setPrecio(e.target.value)}
-              > </InputText>
-            </div>
-            <div className='dialog-dato-producto'>
-              <label>Stock:</label>
-              <InputText value={stock}
-                type='number'
-                placeholder='Ingrese el stock de la Oferta'
-                onChange={(e) => setStock(e.target.value)}
-              > </InputText>
-            </div>
-            <div className='dialog-dato-producto'>
-              <label>Descripción:</label>
-              <InputText value={descripcion}
-                type='text'
-                placeholder='Ingrese la descripción de la oferta '
-                onChange={(e) => setDescripcion(e.target.value)}
-              > </InputText>
-            </div>
-            <div className='dialog-dato-producto'>
-              <div className='div-img-select'>
-                <label>Imagen de la Oferta:</label>
-                <input
-                  className='input-img'
-                  type="file" 
-                  id="fileInput"
-                  accept="image/*"
-                  onChange={onFileChange}>
-                </input>
-              </div>
-              <div className='div-img'>
+            <div className='div-img'>
               {preview !== null ? (
+                <img
+                  src={preview}
+                  alt="Vista previa"
+                  style={{ width: '80px', objectFit: 'cover' }}
+                />
+              ) : (
+                selectedFile && (
                   <img
-                    src={preview}
+                    src={selectedFile}
                     alt="Vista previa"
                     style={{ width: '80px', objectFit: 'cover' }}
                   />
-                ) : (
-                  selectedFile && (
-                    <img
-                      src={selectedFile}
-                      alt="Vista previa"
-                      style={{ width: '80px', objectFit: 'cover' }}
-                    />
-                  )
-                )}
-              </div>
-
+                )
+              )}
             </div>
 
           </div>
-          <div className='footer-dialog-create'>
 
-            <Button
-              className='btn-cancelar-dialog'
-              label='Cancelar'
-              onClick={() => {
-                setVisibleEdit(false); deleteCampos();
-                }}>
-            </Button>
-            <Button className='btn-crear-dialog' label='Crear'
-              onClick={() => { 
-                setVisibleEdit(false); 
-                crearProducto();
-                deleteCampos();
-                }}>
-            </Button>
-          </div>
-        </Dialog>
+        </div>
+      </Dialog>
 
       {/*DIALOG ELIMINAR*/}
-      <Dialog className='dialog-create' visible={visibleDelete} onHide={() => { setVisibleDelete(false); deleteCampos() }}>
-        <div className='head-dialog-create'>
-          <h2>¿Desea eliminar {nombreOferta}?</h2>
-        </div>
-        <div className='footer-dialog-create'>
+      <Dialog
+        className='dialog-create'
+        visible={visibleDelete}
+        onHide={() => { setVisibleDelete(false); deleteCampos() }}
+        header={<div><h3>¿Desea eliminar {nombreOferta}?</h3></div>}
+        footer={<div className='footer-dialog-create'>
           <Button
             className='btn-cancelar-dialog'
             label='Cancelar'
             onClick={() => { setVisibleDelete(false); deleteCampos() }}>
           </Button>
           <Button className='btn-crear-dialog' label='Eliminar'
-            onClick={() => { setVisibleDelete(false); deleteOferta(); deleteCampos()}}>
+            onClick={() => { setVisibleDelete(false); deleteOferta(); deleteCampos() }}>
           </Button>
-        </div>
+        </div>}
+      >
+        <br />
+
       </Dialog>
     </>
   )

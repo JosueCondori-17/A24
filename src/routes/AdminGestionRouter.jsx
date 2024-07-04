@@ -7,10 +7,12 @@ import { UsuarioPassword } from '../components/VistaAdmin/UsuarioPassword'
 import { FooterAdmin } from '../components/VistaAdmin/FooterAdmin'
 import { HeaderGestion } from '../components/VistaAdmin/HeaderGestion'
 import { ListaPedido } from '../components/VistaAdmin/ListaPedido'
+import { HeaderAdmin } from '../components/VistaAdmin/HeaderAdmin'
 
 export const AdminGestionRouter = () => {
   return (
     <>
+      <HeaderAdmin></HeaderAdmin>
       <HeaderGestion />
       <hr />
       <section className='seccion-gestion'>

@@ -52,7 +52,7 @@ export const CrudCategoria = () => {
   const crearCategoria = async () => {
     const data =
     {
-      "nombre": nombreCategoria
+      "label": nombreCategoria
     }
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/categorias', data);
@@ -74,7 +74,7 @@ export const CrudCategoria = () => {
     const id = idCategoria;
     const data =
     {
-      "nombre": nombreCategoria
+      "label": nombreCategoria
     }
     try {
       const response = await axios.put(`http://127.0.0.1:8000/api/categorias/${id}`, data);
@@ -115,18 +115,33 @@ export const CrudCategoria = () => {
             setVisible2(true); setIdCategoria(data.id); setNombreCategoria(data.nombre); setNameCat(data.nombre)
           }}
           className='btn-edit'>
-          <img className='icon-crud' src={iconEditar} alt="btn-edit" /> Editar
+          <i className="pi pi-pencil"></i>
         </Button>
         <Button
           onClick={() => {
             setVisibleDelete(true); setIdCategoria(data.id); setNombreCategoria(data.nombre)
           }}
           className='btn-delete'>
-          <img className='icon-crud' src={iconEliminar} alt="btn-delete" /> Eliminar
+          <i className="pi pi-trash"></i>
         </Button>
       </div>
     )
   };
+
+  //esto sirve para el buscador de la tablaaaa
+  const [globalFilter, setGlobalFilter] = useState('');
+  const getHeader = () => {
+     return (
+           <div style={{padding:"5px", display:"flex", justifyContent:"end", alignItems:"center"}}>
+              <i className="pi pi-search"></i>
+              <InputText style={{ textAlign: 'left', padding:"5px", marginLeft:"10px" }}
+                 type="search"
+                 onInput={(e) => setGlobalFilter(e.target.value)}
+                 placeholder="Buscar categoría" />
+           </div>
+     );
+  };
+  let header = getHeader();
 
 
   return (
@@ -134,24 +149,33 @@ export const CrudCategoria = () => {
       <Toast className='toast-correct' ref={toast} />
       <div className="caja-crud-admin">
         <div className='crear-button'>
-          <Button onClick={() => setVisible(true)} className='btn-create'> <img className='icon-crud' src={iconCrear} alt="btn-create" /> Crear Categoría</Button>
+          <Button onClick={() => setVisible(true)} className='btn-create'> <i className="pi pi-plus"></i> Crear Categoría</Button>
         </div>
         <div className='tabla'>
-          <DataTable className="tabla-crud" value={categoria} tableStyle={{ minWidth: '50rem' }}>
+          <DataTable
+          globalFilter={globalFilter}
+          header={header} 
+          scrollable scrollHeight="300px"
+          paginator rows={4}
+          className="tabla-crud" 
+          value={categoria} 
+          tableStyle={{ minWidth: '50rem' }}>
             <Column className="column-crud" header="ID" field="id" ></Column>
-            <Column className="column-crud" header="Nombre" field="nombre" ></Column>
+            <Column className="column-crud" header="Nombre" field="label" ></Column>
             <Column className="column-crud" header="Acciones" body={(e) => butonsAccion(e)} ></Column>
           </DataTable>
         </div>
       </div>
-
       {/*DIALOG CREAR */}
-      <Dialog className='dialog-create' visible={visible} onHide={() => { setVisible(false); setNombreCategoria("") }}>
-        <div className='head-dialog-create'>
-          <h1>Crear nueva categoría</h1>
-          <p>Crea categorías para clasificar tus productos y facilitar la compra de los clientes.</p>
-        </div>
+      <Dialog
+        className='dialog-create'
+        visible={visible}
+        onHide={() => { setVisible(false); setNombreCategoria("") }}
+        header={<div><h2>Crear nueva categoría</h2></div>}
+      >
+
         <div className='body-dialog-create'>
+          <p>Crea categorías para clasificar tus productos y facilitar la compra de los clientes.</p>
           <label>Nombre de categoría:</label>
           <InputText value={nombreCategoria}
             type='text'
@@ -176,12 +200,17 @@ export const CrudCategoria = () => {
       </Dialog>
 
       {/*DIALOG EDITAR*/}
-      <Dialog className='dialog-create' visible={visible2} onHide={() => { setVisible2(false); setNombreCategoria("") }}>
-        <div className='head-dialog-create'>
-          <h1>Actualizar categoría {nameCat}</h1>
-          <p>Aquí puede actualizar tus categorías.</p>
-        </div>
+      <Dialog
+        className='dialog-create'
+        visible={visible2}
+        onHide={() => { setVisible2(false); setNombreCategoria("") }}
+        header={<div>
+          <h2>Actualizar categoría {nameCat}</h2>
+
+        </div>}
+      >
         <div className='body-dialog-create'>
+          <p>Aquí puede actualizar tus categorías.</p>
           <label>Nombre de categoría:</label>
           <InputText value={nombreCategoria}
             type='text'
@@ -203,10 +232,13 @@ export const CrudCategoria = () => {
       </Dialog>
 
       {/*DIALOG ELIMINAR*/}
-      <Dialog className='dialog-create' visible={visibleDelete} onHide={() => { setVisibleDelete(false); setNombreCategoria("") }}>
-        <div className='head-dialog-create'>
-          <h1>¿Desea eliminar {nombreCategoria}?</h1>
-        </div>
+      <Dialog
+        className='dialog-create'
+        visible={visibleDelete}
+        onHide={() => { setVisibleDelete(false); setNombreCategoria("") }}
+        header={<div><h3>¿Desea eliminar {nombreCategoria}?</h3></div>}
+      >
+        <br />
         <div className='footer-dialog-create'>
           <Button
             className='btn-cancelar-dialog'

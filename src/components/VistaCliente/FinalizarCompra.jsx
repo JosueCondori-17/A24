@@ -13,6 +13,7 @@ import iconPlin from '../../icons/plin.jpg';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { Toast } from 'primereact/toast';
+import { Checkbox } from 'primereact/checkbox';
 
 const FinalizarCompra = () => {
   const { carrito, totalCarrito, dataUbicacion } = useContext(ClienteContext);
@@ -41,7 +42,8 @@ const FinalizarCompra = () => {
   const [info, setInfo] = useState("");
   const [listaPro, setListaPro] = useState("");
   const [pago, setPago] = useState("Deposito");
-  const [estadoPed, setEstadoPed] = useState("Pedido");
+  const [banca, setBanca] = useState(false);
+  const [estadoPed, setEstadoPed] = useState("Sin entregar");
 
 
   useEffect(() => {
@@ -53,15 +55,6 @@ const FinalizarCompra = () => {
     }
   }, [carrito]);
 
-  const cambiarNumDocumento = (e) => {
-    let value = parseInt(e.target.value);
-    if (Number.isInteger(value)) {
-      setNum_documento(value);
-    }
-    else {
-      setNum_documento("");
-    }
-  }
   const cambiarTelefono = (e) => {
     let value = parseInt(e.target.value);
     if (Number.isInteger(value)) {
@@ -77,15 +70,25 @@ const FinalizarCompra = () => {
   const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImNvbmRvcmlodWF5dW5nYWpvc3VlY2FsZWRAZ21haWwuY29tIn0.B0T7dbMjdvAZTdfmKa9vTjwCgYWRnVSnDqg56faRNqo";
 
   const getDNI = async () => {
-    const response = await axios.get(`https://dniruc.apisperu.com/api/v1/dni/${num_documento}?token=${token}`);
-    console.log("DNI DEL CLIENTE: ", response.data);
-    setNombre(response.data.nombres);
-    setApellidos(response.data.apellidoPaterno + " " + response.data.apellidoMaterno);
-    showToast(
-      "success",
-      "DNI válido",
-      `DNI ingresado correctamente`
-    );
+    try{
+      const response = await axios.get(`https://dniruc.apisperu.com/api/v1/dni/${num_documento}?token=${token}`);
+      console.log("DNI DEL CLIENTE: ", response.data);
+      setNombre(response.data.nombres);
+      setApellidos(response.data.apellidoPaterno + " " + response.data.apellidoMaterno);
+      showToast(
+        "success",
+        "DNI válido",
+        `DNI ingresado correctamente`
+      );
+    }
+    catch{
+      showToast(
+        "error",
+        "DNI inválido",
+        `Ingrese correctamente`
+      );
+    }
+
   }
   const getRUC = async () => {
     const response = await axios.get(`https://dniruc.apisperu.com/api/v1/ruc/${num_documento}?token=${token}`);
@@ -97,43 +100,50 @@ const FinalizarCompra = () => {
     );
   }
 
-const crearPedido = async()=>{
+  const crearPedido = async () => {
+    const fechaActual = new Date();
+    const dia = String(fechaActual.getDate()).padStart(2, '0');
+    const mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
+    const año = fechaActual.getFullYear();
+    const horas = String(fechaActual.getHours()).padStart(2, '0');
+    const minutos = String(fechaActual.getMinutes()).padStart(2, '0');
+    const segundos = String(fechaActual.getSeconds()).padStart(2, '0');
+    const fechaFormateada = `${dia}/${mes}/${año}`;
+    const horaFormateada = `${horas}:${minutos}:${segundos}`;
 
-  const fechaActual = new Date();
-  const dia = String(fechaActual.getDate()).padStart(2, '0');
-  const mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
-  const año = fechaActual.getFullYear();
-  const fechaFormateada = `${dia}/${mes}/${año}`;
+    const data =     
+    {
+      "fecha": `${fechaFormateada} - ${horaFormateada}`,
+      "nombre_cli": nombre,
+      "apellido_cli": apellidos,
+      "dni_cli": (num_documento),
+      "telefono_cli": telefono,
+      "correo_cli": correo,
+      "departamento_cli": departamento,
+      "distrito_cli": distrito,
+      "direccion_cli": direccion,
+      "referencia_cli": referencia,
+      "mensaje_cli": info,
+      "producto": listaPro,
+      "metodo_pago": pago,
+      "banca_billetera": banca,
+      "estado_pedido": estadoPed
+  }
 
-  const data =
-  {
-    "fecha": fechaFormateada,
-    "nombre_cli": nombre,
-    "apellido_cli": apellidos,
-    "dni_cli": num_documento,
-    "telefono_cli": telefono,
-    "correo_cli": correo,
-    "departamento_cli": departamento,
-    "distrito_cli": distrito,
-    "direccion_cli": direccion,
-    "referencia_cli": referencia,
-    "mensaje_cli": info,
-    "producto": listaPro,
-    "estado_pedido": "Sin entregar"
-  }
-  try {
-    const response = await axios.post('http://127.0.0.1:8000/api/pedidos', data);
-    console.log('Pedido realizado:', response.data);
-    showToast(
-      "success",
-      "Pedido Realizado",
-      `Se hizo el pedido correctamente`
-    );
-  } catch (error) {
-    console.error('Error al crear categoría:', error);
-  }
-}
-  
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/pedidos', data);
+      console.log('Pedido realizado:', response.data);
+      showToast(
+        "success",
+        "Pedido Realizado",
+        `Se hizo el pedido correctamente`
+      );
+    } catch (error) {
+      console.error('Error al crear pedido:', error);
+    }
+  };
+
+
   return (
     <>
       <Toast className='toast-correct' ref={toast} />
@@ -157,7 +167,7 @@ const crearPedido = async()=>{
                     maxLength={documento == "DNI" ? 8 : 10}
                     type='text'
                     value={num_documento}
-                    onChange={(e) => cambiarNumDocumento(e)}
+                    onChange={(e) => setNum_documento(e.target.value)}
                     placeholder='Ingresa tu número de documento'
                     required />
                 </div>
@@ -180,7 +190,12 @@ const crearPedido = async()=>{
               </div>
               <div>
                 <p>Nombres: </p>
-                <input type='text' value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder='Ingresa tus nombres' required />
+                <input 
+                type='text' 
+                value={nombre} 
+                onChange={(e) => setNombre(e.target.value)} 
+                placeholder='Ingresa tus nombres' 
+                required />
               </div>
               <div>
                 <p>Apellidos: </p>
@@ -192,12 +207,12 @@ const crearPedido = async()=>{
               </div>
               <div>
                 <p>Correo electrónico: </p>
-                <input type='email' value={correo} onChange={(e)=> setCorreo(e.target.value)} placeholder='Ingresa' required />
+                <input type='email' value={correo} onChange={(e) => setCorreo(e.target.value)} placeholder='Ingresa' required />
               </div>
               <div>
                 <p>Departamento: </p>
                 <select required className='tip_document' name="departamento" id="select" onChange={(e) => setDepartamento(e.target.value)}>
-                  <option className='option-document' value="" >DEPARTAMENTO</option>
+                  <option className='option-document' value="" >Selecciona un departamento</option>
                   {dataUbicacion?.map((departamento) => {
                     return (
                       <option key={departamento.id} value={departamento.departamento}>{departamento.departamento}</option>
@@ -248,7 +263,7 @@ const crearPedido = async()=>{
                 <label className={pago == "Deposito" ? "selectRadio" : ""} htmlFor=""> Depósito o transferencia bancaria</label>
               </div>
               <div className='radios-btn'>
-                <RadioButton inputId="2" name="yape" value="Yape" onChange={(e) => setPago(e.value)} checked={pago === 'Yape'} />
+                <RadioButton inputId="2" name="yape" value="Yape" onChange={(e) => {setPago(e.value); setBanca("")}} checked={pago === 'Yape'} />
                 <label className={pago == "Yape" ? "selectRadio" : ""} htmlFor=""> Pago por Yape</label>
               </div>
             </div>
@@ -257,16 +272,34 @@ const crearPedido = async()=>{
                 (
                   <>
                     <div className='metodo-box'>
-                      <p>Realiza tu pago directamente en nuestras cuentas bancarias:</p>
+                      <p>Seleccione la cuenta bancaria y realice su pago directamente: </p>
                       <div className='box-bancos'>
                         <div className='box-banco-info'>
-                          <img width={"50PX"} src={iconBCP} alt="iconBanco" />
+                        <div className='select-banca'>
+                            <img width={"50PX"} src={iconBCP} alt="iconBanco" />
+                            <input
+                              value={"BCP"}
+                              onChange={(e) => setBanca(e.target.value)}
+                              type="checkbox"
+                              checked={banca == "BCP"}
+                              required={banca == false}
+                            />
+                          </div>
                           <p>BCP</p>
                           <p>191-04892533-0-45</p>
                           <p>Titular: A24</p>
                         </div>
                         <div className='box-banco-info'>
-                          <img width={"50PX"} src={iconBBVA} alt="iconBanco" />
+                        <div className='select-banca'>
+                            <img width={"50PX"} src={iconBBVA} alt="iconBanco" />
+                            <input
+                              value={"BBVA Continental"}
+                              onChange={(e) => setBanca(e.target.value)}
+                              type="checkbox"
+                              checked={banca == "BBVA Continental"}
+                              required={banca == false}
+                            />
+                          </div>
                           <p>BBVA</p>
                           <p>191-04892533-0-45</p>
                           <p>Titular: A24</p>
@@ -274,13 +307,32 @@ const crearPedido = async()=>{
                       </div>
                       <div className='box-bancos'>
                         <div className='box-banco-info'>
-                          <img width={"50PX"} src={iconInterBank} alt="iconBanco" />
+                          <div className='select-banca'>
+                            <img width={"50PX"} src={iconInterBank} alt="iconBanco" />
+                            <input
+                              value={"Interbank"}
+                              onChange={(e) => setBanca(e.target.value)}
+                              type="checkbox"
+                              checked={banca == "Interbank"}
+                              required={banca == false}
+                            />
+                          </div>
                           <p>INTERBANK</p>
                           <p>191-04892533-0-45</p>
                           <p>Titular: A24</p>
                         </div>
                         <div className='box-banco-info'>
-                          <img width={"50PX"} src={iconScotiabank} alt="iconBanco" />
+                          <div className='select-banca'>
+                            <img width={"50PX"} src={iconScotiabank} alt="iconBanco" />
+                            <input
+                              value={"Scotiabank"}
+                              onChange={(e) => setBanca(e.target.value)}
+                              type="checkbox"
+                              checked={banca == "Scotiabank"}
+                              required={banca == false}
+                            />
+                          </div>
+
                           <p>SCOTIABANK</p>
                           <p>191-04892533-0-45</p>
                           <p>Titular: A24</p>
@@ -325,7 +377,7 @@ const crearPedido = async()=>{
                   </>
                 )
             }
-            <Button onClick={()=> crearPedido()} className='btn-pedido'>Realizar el pedido</Button>
+            <Button onClick={() => crearPedido()} className='btn-pedido'>Realizar el pedido</Button>
           </div>
 
         </div>

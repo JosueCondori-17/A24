@@ -59,11 +59,11 @@ export const HeaderNav = () => {
         <div className='header-cli'>
           <Link to={'/'} className='logo'> A24 STORE</Link>
           <div className='botones'>
-            <Link className='btn-link' to={'/admin-page'}> Acceder </Link>
+            <Link className='btn-link' to={'/admin-page/*'}> Acceder </Link>
             <Link className='btn-link' to={'/carrito'}>
               <p>S/ {totalCarrito}</p>
-              <img width={"30px"} src={iconCarrito} alt="botonCarrito" />
-              <span className='contador'>{cantidadCarrito > 0 ? cantidadCarrito : null}</span>
+              <i className='pi pi-shopping-cart'></i>
+              <span className={cantidadCarrito> 0 ? 'contador': ""}>{cantidadCarrito > 0 ? cantidadCarrito : null}</span>
             </Link>
           </div>
         </div>
@@ -73,8 +73,8 @@ export const HeaderNav = () => {
               key={categoria.id}
               className={cateObject?.id === categoria.id ? "activado" : "link"}
               onClick={() => { obtenerObject(categoria) }}
-              to={`/catalogo/${categoria.nombre}`} >
-              <p>{categoria.nombre}</p>
+              to={`/catalogo/${categoria.label}`} >
+              <p>{categoria.label}</p>
             </NavLink>
           ))}
         </div>

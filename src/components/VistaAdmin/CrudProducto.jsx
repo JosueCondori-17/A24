@@ -39,7 +39,7 @@ export const CrudProducto = () => {
       reader.readAsDataURL(file);
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     setPreview(null);
   }, [selectedFile]);
 
@@ -49,7 +49,7 @@ export const CrudProducto = () => {
   const [stock, setStock] = useState("");
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const [categoriaSeleccionada2, setCategoriaSeleccionada2] = useState(null);
-  const [nombreCategoria, setNombreCategoria]= useState("");
+  const [nombreCategoria, setNombreCategoria] = useState("");
 
   //CAMPOS PARA DIALOGS
   const [visible, setVisible] = useState(false);
@@ -57,7 +57,7 @@ export const CrudProducto = () => {
   const [visibleDelete, setVisibleDelete] = useState(false);
 
   //FUNCIÓN PARA BORRAR LOS CAMPOS
-  const deleteCampos=()=>{
+  const deleteCampos = () => {
     setNombreProducto("");
     setPrecio("");
     setStock("");
@@ -65,11 +65,11 @@ export const CrudProducto = () => {
     setSelectedFile("");
   }
 
-    //TRAER CATEGORÍAS
+  //TRAER CATEGORÍAS
   const [categorias, setCategorias] = useState([
     {
       "id": 0,
-      "nombre": ""
+      "label": ""
     }
   ]);
 
@@ -77,7 +77,7 @@ export const CrudProducto = () => {
   const getCategorias = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:8000/api/categorias');
-      console.log("categoriassssss",response.data);
+      console.log("categoriassssss", response.data);
       setCategorias(response.data);
     }
     catch (error) {
@@ -88,10 +88,10 @@ export const CrudProducto = () => {
     getCategorias();
   }, []);
 
-  useEffect(()=>{
-    if(categorias){
-      categorias.map((item)=>{
-        if(item.nombre == nombreCategoria){
+  useEffect(() => {
+    if (categorias) {
+      categorias.map((item) => {
+        if (item.label == nombreCategoria) {
           setCategoriaSeleccionada2(item);
         }
       })
@@ -132,7 +132,7 @@ export const CrudProducto = () => {
     formData.append("nombre", nombreProducto)
     formData.append("precio", precio)
     formData.append("stock", stock)
-    formData.append("nombre_categoria", categoriaSeleccionada.nombre)
+    formData.append("nombre_categoria", categoriaSeleccionada.label)
     formData.append("imagen", selectedFile)
 
     try {
@@ -150,8 +150,8 @@ export const CrudProducto = () => {
 
   }
   //CRUD - EDITAR
-  
-  const  [idProducto, setIdProducto] = useState(null);
+
+  const [idProducto, setIdProducto] = useState(null);
 
   const actualizarProducto = async () => {
     const id = idProducto;
@@ -161,7 +161,7 @@ export const CrudProducto = () => {
     formData.append("nombre", nombreProducto);
     formData.append("precio", precio);
     formData.append("stock", stock);
-    formData.append("nombre_categoria", categoriaSeleccionada2.nombre);
+    formData.append("nombre_categoria", categoriaSeleccionada2.label);
     if (selectedFile instanceof File) {
       formData.append("imagen", selectedFile);
     }
@@ -178,10 +178,8 @@ export const CrudProducto = () => {
     } catch (error) {
       console.error('Error al actualizar producto:', error);
     }
-
   }
-
-
+  
   //CRUD- DELETE
 
   const deleteProducto = async () => {
@@ -215,7 +213,7 @@ export const CrudProducto = () => {
             setNombreCategoria(data.nombre_categoria);
           }}
           className='btn-edit'>
-          <img className='icon-crud' src={iconEditar} alt="btn-edit" /> Editar
+          <i className="pi pi-pencil"></i>
         </Button>
         <Button
           onClick={() => {
@@ -224,7 +222,7 @@ export const CrudProducto = () => {
             setNombreProducto(data.nombre)
           }}
           className='btn-delete'>
-          <img className='icon-crud' src={iconEliminar} alt="btn-delete" /> Eliminar
+          <i className="pi pi-trash"></i>
         </Button>
       </div>
     )
@@ -234,9 +232,19 @@ export const CrudProducto = () => {
       <img width="40px" src={data.imagen} alt={data.nombre} />
     )
   }
-
-
-
+  const [globalFilter, setGlobalFilter] = useState('');
+   const getHeader = () => {
+      return (
+            <div style={{padding:"5px", display:"flex", justifyContent:"end", alignItems:"center"}}>
+               <i className="pi pi-search"></i>
+               <InputText style={{ textAlign: 'left', padding:"5px", marginLeft:"10px" }}
+                  type="search"
+                  onInput={(e) => setGlobalFilter(e.target.value)}
+                  placeholder="Buscar producto" />
+            </div>
+      );
+   };
+   let header = getHeader();
 
   return (
     <>
@@ -246,11 +254,18 @@ export const CrudProducto = () => {
           <Button
             onClick={() => setVisible(true)}
             className='btn-create'>
-            <img className='icon-crud' src={iconCrear} alt="btn-create" /> Agregar nuevo producto
+            <i className="pi pi-plus"></i>  Agregar nuevo producto
           </Button>
         </div>
         <div className='tabla'>
-          <DataTable className="tabla-crud" value={productos} tableStyle={{ minWidth: '50rem' }}>
+          <DataTable
+          globalFilter={globalFilter}
+          header={header}
+          paginator rows={4}
+          scrollable scrollHeight="300px" 
+          className="tabla-crud" 
+          value={productos} 
+          tableStyle={{ minWidth: '50rem' }}>
             <Column className="column-crud" header="ID" field="id" ></Column>
             <Column className="column-crud" header="Nombre" field="nombre" ></Column>
             <Column className="column-crud" header="Imagen" body={(e) => mostrarImg(e)} ></Column>
@@ -264,13 +279,16 @@ export const CrudProducto = () => {
 
       {/*DIALOG CREAR */}
       <div className='container-dialog'>
-        <Dialog className='dialog-crud-producto' visible={visible} onHide={() => setVisible(false)}>
-          <div className='head-dialog-create'>
-            <h2>Agregar nuevo producto</h2>
-            <p>En esta sección puedes agregar más productos para la variedad de tu tienda.</p>
-          </div>
+        <Dialog
+          className='dialog-crud-producto'
+          visible={visible}
+          onHide={() => setVisible(false)}
+          header={<div><h2>Agregar nuevo producto</h2></div>}
+        >
+
           <div className='body-dialog-crud-producto'>
             <div className='dialog-dato-producto'>
+              <p>En esta sección puedes agregar más productos para la variedad de tu tienda.</p>
               <label>Nombre del producto:</label>
               <InputText value={nombreProducto}
                 type='text'
@@ -298,9 +316,9 @@ export const CrudProducto = () => {
               <label>Categoría:</label>
               <Dropdown
                 value={categoriaSeleccionada}
-                onChange={(e) => {setCategoriaSeleccionada(e.value); console.log(e.value);}}
-                options={categorias} 
-                optionLabel="nombre"
+                onChange={(e) => { setCategoriaSeleccionada(e.value); console.log(e.value); }}
+                options={categorias}
+                optionLabel="label"
                 placeholder="Seleccciona una categoría"
                 className="w-full md:w-14rem select"
               />
@@ -311,14 +329,14 @@ export const CrudProducto = () => {
                 <input
 
                   className='input-img'
-                  type="file" 
+                  type="file"
                   id="fileInput"
                   accept="image/*"
                   onChange={onFileChange}>
                 </input>
               </div>
               <div className='div-img'>
-              {preview !== null ? (
+                {preview !== null ? (
                   <img
                     src={preview}
                     alt="Vista previa"
@@ -345,27 +363,30 @@ export const CrudProducto = () => {
               label='Cancelar'
               onClick={() => {
                 setVisible(false); deleteCampos();
-                }}>
+              }}>
             </Button>
             <Button className='btn-crear-dialog' label='Crear'
-              onClick={() => { 
-                setVisible(false); 
+              onClick={() => {
+                setVisible(false);
                 crearProducto();
                 deleteCampos();
-                }}>
+              }}>
             </Button>
           </div>
         </Dialog>
       </div>
       {/*DIALOG EDITAR*/}
       <div className='container-dialog'>
-        <Dialog className='dialog-crud-producto' visible={visibleEdit} onHide={() => {setVisibleEdit(false); deleteCampos()}}>
-          <div className='head-dialog-create'>
-            <h2>Actualiza {nombreProducto}</h2>
-            <p>En esta sección podrás editar los productos de tu tienda.</p>
-          </div>
+        <Dialog 
+        className='dialog-crud-producto' 
+        visible={visibleEdit} 
+        onHide={() => { setVisibleEdit(false); deleteCampos() }}
+        header={<div><h2>Actualiza {nombreProducto}</h2></div>}
+        >
+          
           <div className='body-dialog-crud-producto'>
             <div className='dialog-dato-producto'>
+            <p>En esta sección podrás editar los productos de tu tienda.</p>
               <label>Nombre del producto:</label>
               <InputText value={nombreProducto}
                 type='text'
@@ -393,9 +414,9 @@ export const CrudProducto = () => {
               <label>Categoría:</label>
               <Dropdown
                 value={categoriaSeleccionada2}
-                onChange={(e) => {setCategoriaSeleccionada2(e.value); console.log(e.value);}}
-                options={categorias} 
-                optionLabel="nombre"
+                onChange={(e) => { setCategoriaSeleccionada2(e.value); console.log(e.value); }}
+                options={categorias}
+                optionLabel="label"
                 placeholder="Seleccciona una categoría"
                 className="w-full md:w-14rem select"
               />
@@ -436,30 +457,33 @@ export const CrudProducto = () => {
             <Button
               className='btn-cancelar-dialog'
               label='Cancelar'
-              onClick={() =>{ setVisibleEdit(false); deleteCampos();}}>
+              onClick={() => { setVisibleEdit(false); deleteCampos(); }}>
             </Button>
             <Button className='btn-crear-dialog' label='Actualizar'
-              onClick={() => { setVisibleEdit(false); actualizarProducto(); deleteCampos();}}>
+              onClick={() => { setVisibleEdit(false); actualizarProducto(); deleteCampos(); }}>
             </Button>
           </div>
         </Dialog>
       </div>
       {/*DIALOG ELIMINAR*/}
-        <Dialog className='dialog-create' visible={visibleDelete} onHide={() => {setVisibleDelete(false); deleteCampos();}}>
-          <div className='head-dialog-create'>
-            <h2>¿Desea eliminar {nombreProducto}?</h2>
-          </div>
-          <div className='footer-dialog-create'>
-            <Button
-              className='btn-cancelar-dialog'
-              label='Cancelar'
-              onClick={() => {setVisibleDelete(false), deleteCampos()}}>
-            </Button>
-            <Button className='btn-crear-dialog' label='Eliminar'
-              onClick={() => { setVisibleDelete(false); deleteProducto(); deleteCampos()}}>
-            </Button>
-          </div>
-        </Dialog>
+      <Dialog 
+      className='dialog-create' 
+      visible={visibleDelete} 
+      onHide={() => { setVisibleDelete(false); deleteCampos(); }}
+      header={<div><h3>¿Desea eliminar {nombreProducto}?</h3></div>}
+      >
+        <br/>
+        <div className='footer-dialog-create'>
+          <Button
+            className='btn-cancelar-dialog'
+            label='Cancelar'
+            onClick={() => { setVisibleDelete(false), deleteCampos() }}>
+          </Button>
+          <Button className='btn-crear-dialog' label='Eliminar'
+            onClick={() => { setVisibleDelete(false); deleteProducto(); deleteCampos() }}>
+          </Button>
+        </div>
+      </Dialog>
     </>
   )
 }
