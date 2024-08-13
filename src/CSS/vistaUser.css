@@ -7,121 +7,66 @@
 .caja{
     width: 100%;
     height: auto;
-}
-.header-cli{
-    background-color: #cc292e;
+    padding: 10px 0px;
+    background-color: #f8b808;
     display: flex;
-    flex-wrap: wrap;
-    padding: 20px 0px;
-    width: 100%;
-    height: auto;
-    
-}
-.logo{
-    display: flex;
-    justify-content: end;
     align-items: center;
-    padding: 0px 50px;
-    font-size: 30px;
-    font-style: italic;
-    color: white;
-    text-decoration: none;
+    flex-direction: row;
 }
-.botones{
+
+.buscador{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+.buscador i {
+    position: absolute;
+    color: blue;
+    margin-right: 10px;
+}
+.input-buscador{
+    padding: 5px 10px;
+}
+.section-header-left{
+    padding: 0px 20px;
+}
+.section-header-right{
     flex-grow: 1;
     display: flex;
+    flex-direction: row;
     justify-content: end;
     align-items: center;
-    padding: 0px 50px;
-    gap: 15px;
-}
-.btn-link{
-    padding: 5px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    position: relative;
-}
-.btn-link:hover{
-    transition: 0.5s ease;
-    padding: 5px 20px;
-    border-radius: 10px;
-    background-color: #cc292e;
-    color: white;
-}
-.contador{
-    background-color: #e99294;
-    position: absolute;
-    top: -5px;
-    right: 5px;
-    border-radius: 10px;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0px 1px 1px 0px;
-}
-
-/*Aca empieza el NAV*/
-
-.nav{
-    width: 100%;
-    display: flex;
-    justify-content: start;
-    background-color: #cc292e;
-}
-.p-menubar-root-list{
-    background-color: #cc292e;
-    padding: 5px 20px;
-    display: flex;
-    gap: 10px;
-    border: none !important;
-    outline: none !important;
+    gap: 20px;
 }
 .link{
     text-decoration: none;
-    padding: 10px;
-    background-color: #cc292e;
-    color:white;
-    font-weight: bold;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-.link p{
-    font-size: clamp(13px, 2vw, 15px);
+    color: white;
+    transition: 0.3s ease;
 }
 .link:hover{
-    text-decoration: none;
-    padding: 10px;
-    color: #86a9f5;
-    font-weight: bold;
-    font-size: 15px;
+    background-color: #001A55;
+    padding: 0px 5px;
+    border-radius: 10px;
+    transition: 0.3s ease;
 }
-.activado{
-    transition: 0.9s ease;
-    text-decoration: none;
-    padding: 10px;
-    background-color: #cc292e;
-    color: #86a9f5;
-    font-weight: bold;
-    flex-grow: 1;
+.box-butons-nav{
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
     gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
 }
-.activado p{
-    font-size: clamp(13px, 2vw, 15px);
+.box-butons-nav i{
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+.box-butons-nav i:hover{
+    background-color: #001A55;
+    padding: 5px 5px;
+    border-radius: 5px;
+    transition: 0.3s ease; 
 }
 /*ESTILOS PARA EL PANEL DE OFERTA y CATALOGO */
 .panel-oferta{
@@ -143,7 +88,7 @@
 .oferta-template{
     border: 1px solid #aebee2;
     border-radius: 10px;
-    width: 30%;
+    width: auto;
     height: auto;
     padding: 10px;
     flex-grow: 1;
@@ -485,15 +430,23 @@
 
 /*ESTILOS PARA EL FOOTER DEL CLIENTE*/
 .footer-container{
-    background-color: #cc292e;
+    background-color: #001A55;
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     padding: 20px 0px;
     font-size: clamp(13px, 2vw, 15px);
+    justify-content: center;
 }
 .foo-lista{
     width: auto;
     color: white;
     padding: 20px 40px;
+    list-style: none;
+}
+.foo-lista h2{
+    margin-bottom: 10px;
+}
+.foo-lista li{
+    margin: 5px 0px;
 }

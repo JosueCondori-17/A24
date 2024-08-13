@@ -28,9 +28,9 @@ export const Footer = () => {
     <footer className='footer-container'>
     <div className='foo-lista'>
       <h2>Contáctanos</h2> 
-      <li>929863124</li>
+      <li><i className='pi pi-whatsapp'/> 929863124</li>
       <h2>Correo</h2>
-      <li>aaaaaa@gmail.com</li>
+      <li><i className='pi pi-envelope'/> example@gmail.com</li>
     </div>
     <div className='foo-lista'>
       <h2>Categorías</h2>
@@ -41,16 +41,16 @@ export const Footer = () => {
     </div>
     <div className='foo-lista'>
       <h2>Conócenos</h2>
-      <li>Sobre Nosotros</li>
-      <li>Nuestra Historia</li>
-      <li>Nuestra Visión</li>
+      <li><i className='pi pi-users'/> Sobre Nosotros</li>
+      <li><i className='pi pi-book'/> Nuestra Historia</li>
+      <li><i className='pi pi-eye'/> Nuestra Visión</li>
     </div>
     <div className='foo-lista'>
       <h2>Síguenos</h2>
       <p>Conoce más acerca de nosotros y nuestras promos por nuestras redes sociales</p>
-      <li>Facebook</li>
-      <li>Tik Tok</li>
-      <li>Instagram</li>
+      <li><i className='pi pi-facebook'/> Facebook</li>
+      <li><i className='pi pi-tiktok'/> Tik Tok</li>
+      <li><i className='pi pi-instagram'/> Instagram</li>
     </div>
     
     </footer>

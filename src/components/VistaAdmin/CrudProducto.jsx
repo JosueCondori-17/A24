@@ -179,7 +179,7 @@ export const CrudProducto = () => {
       console.error('Error al actualizar producto:', error);
     }
   }
-  
+
   //CRUD- DELETE
 
   const deleteProducto = async () => {
@@ -208,7 +208,7 @@ export const CrudProducto = () => {
             setNombreProducto(data.nombre);
             setPrecio(data.precio);
             setStock(data.stock);
-            setSelectedFile(data.imagen);
+            setSelectedFile(data.url_imagen);
             console.log(data.nombre_categoria);
             setNombreCategoria(data.nombre_categoria);
           }}
@@ -229,22 +229,22 @@ export const CrudProducto = () => {
   };
   const mostrarImg = (data) => {
     return (
-      <img width="40px" src={data.imagen} alt={data.nombre} />
+      <img width="40px" src={data.url_imagen} alt={data.nombre} />
     )
   }
   const [globalFilter, setGlobalFilter] = useState('');
-   const getHeader = () => {
-      return (
-            <div style={{padding:"5px", display:"flex", justifyContent:"end", alignItems:"center"}}>
-               <i className="pi pi-search"></i>
-               <InputText style={{ textAlign: 'left', padding:"5px", marginLeft:"10px" }}
-                  type="search"
-                  onInput={(e) => setGlobalFilter(e.target.value)}
-                  placeholder="Buscar producto" />
-            </div>
-      );
-   };
-   let header = getHeader();
+  const getHeader = () => {
+    return (
+      <div style={{ padding: "5px", display: "flex", justifyContent: "end", alignItems: "center" }}>
+        <i className="pi pi-search"></i>
+        <InputText style={{ textAlign: 'left', padding: "5px", marginLeft: "10px" }}
+          type="search"
+          onInput={(e) => setGlobalFilter(e.target.value)}
+          placeholder="Buscar producto" />
+      </div>
+    );
+  };
+  let header = getHeader();
 
   return (
     <>
@@ -259,13 +259,13 @@ export const CrudProducto = () => {
         </div>
         <div className='tabla'>
           <DataTable
-          globalFilter={globalFilter}
-          header={header}
-          paginator rows={4}
-          scrollable scrollHeight="300px" 
-          className="tabla-crud" 
-          value={productos} 
-          tableStyle={{ minWidth: '50rem' }}>
+            globalFilter={globalFilter}
+            header={header}
+            paginator rows={4}
+            scrollable scrollHeight="300px"
+            className="tabla-crud"
+            value={productos}
+            tableStyle={{ minWidth: '50rem' }}>
             <Column className="column-crud" header="ID" field="id" ></Column>
             <Column className="column-crud" header="Nombre" field="nombre" ></Column>
             <Column className="column-crud" header="Imagen" body={(e) => mostrarImg(e)} ></Column>
@@ -377,16 +377,26 @@ export const CrudProducto = () => {
       </div>
       {/*DIALOG EDITAR*/}
       <div className='container-dialog'>
-        <Dialog 
-        className='dialog-crud-producto' 
-        visible={visibleEdit} 
-        onHide={() => { setVisibleEdit(false); deleteCampos() }}
-        header={<div><h2>Actualiza {nombreProducto}</h2></div>}
+        <Dialog
+          className='dialog-crud-producto'
+          visible={visibleEdit}
+          onHide={() => { setVisibleEdit(false); deleteCampos() }}
+          header={<div><h2>Actualiza {nombreProducto}</h2></div>}
+          footer={<div className='footer-dialog-create'>
+            <Button
+              className='btn-cancelar-dialog'
+              label='Cancelar'
+              onClick={() => { setVisibleEdit(false); deleteCampos(); }}>
+            </Button>
+            <Button className='btn-crear-dialog' label='Actualizar'
+              onClick={() => { setVisibleEdit(false); actualizarProducto(); deleteCampos(); }}>
+            </Button>
+          </div>}
         >
-          
+
           <div className='body-dialog-crud-producto'>
             <div className='dialog-dato-producto'>
-            <p>En esta sección podrás editar los productos de tu tienda.</p>
+              <p>En esta sección podrás editar los productos de tu tienda.</p>
               <label>Nombre del producto:</label>
               <InputText value={nombreProducto}
                 type='text'
@@ -452,27 +462,16 @@ export const CrudProducto = () => {
             </div>
 
           </div>
-          <div className='footer-dialog-create'>
-
-            <Button
-              className='btn-cancelar-dialog'
-              label='Cancelar'
-              onClick={() => { setVisibleEdit(false); deleteCampos(); }}>
-            </Button>
-            <Button className='btn-crear-dialog' label='Actualizar'
-              onClick={() => { setVisibleEdit(false); actualizarProducto(); deleteCampos(); }}>
-            </Button>
-          </div>
         </Dialog>
       </div>
       {/*DIALOG ELIMINAR*/}
-      <Dialog 
-      className='dialog-create' 
-      visible={visibleDelete} 
-      onHide={() => { setVisibleDelete(false); deleteCampos(); }}
-      header={<div><h3>¿Desea eliminar {nombreProducto}?</h3></div>}
+      <Dialog
+        className='dialog-create'
+        visible={visibleDelete}
+        onHide={() => { setVisibleDelete(false); deleteCampos(); }}
+        header={<div><h3>¿Desea eliminar {nombreProducto}?</h3></div>}
       >
-        <br/>
+        <br />
         <div className='footer-dialog-create'>
           <Button
             className='btn-cancelar-dialog'

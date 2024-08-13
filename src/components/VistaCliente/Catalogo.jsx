@@ -6,6 +6,7 @@ import Producto from "../VistaCliente/Producto.jsx";
 import iconBolsa from "../../icons/bolsaCompra.png";
 import { Link } from 'react-router-dom';
 import { Toast } from 'primereact/toast';
+import { Card } from 'primereact/card';
 
 const Catalogo = () => {
   const { categoriaContext, carrito, addProducto, updateProducto } = useContext(ClienteContext);
@@ -78,18 +79,18 @@ const Catalogo = () => {
 
   const [cantidad, setCantidad] = useState(1);
 
-  const agregarCarrito = () => {
+  const agregarCarrito = (producto) => {
     const newProducto = {
-      id: idCarrito || Date.now(), // Usar idCarrito si existe, de lo contrario generar uno nuevo
-      id_producto: itemProducto.id,
-      nombre: itemProducto.nombre,
-      image: itemProducto.imagen,
-      precio: itemProducto.precio,
+      id: producto.id || Date.now(), // Usar idCarrito si existe, de lo contrario generar uno nuevo
+      id_producto: producto.id,
+      nombre: producto.nombre,
+      image: producto.imagen,
+      precio: producto.precio,
       cantidad,
-      subtotal: itemProducto.precio * cantidad
+      subtotal: producto.precio * cantidad
     };
 
-    if (idCarrito === null) {
+    if (producto.id === null) {
       addProducto(newProducto);
       showToast('success', 'Producto añadido', `${itemProducto?.nombre} ha sido añadido al carrito`);
     } else {
@@ -111,7 +112,7 @@ const Catalogo = () => {
               return (
                 <div className='oferta-template' key={item.id}>
                   <div style={{ background: "#DDDDDD", padding: "5px" }}>
-                    <img width="100px" src={item.imagen} alt="img-product" />
+                    <img width="100px" src={item.url_imagen} alt="img-product" />
                   </div>
                   <div>
                     <h2> {item.nombre} </h2>
@@ -123,7 +124,7 @@ const Catalogo = () => {
                     <Button onClick={() => obtenerItemProducto(item)} className='btn-ver'>
                       Ver
                     </Button>
-                    <Link onClick={() => {obtenerItemProducto(item); agregarCarrito()}} to={'/compra'} className='btn-comprar'>Comprar</Link>
+                    <Link onClick={() => {obtenerItemProducto(item); agregarCarrito(item)}} to={'/compra'} className='btn-comprar'>Comprar</Link>
                   </div>
                 </div>
               );

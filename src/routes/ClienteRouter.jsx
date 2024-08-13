@@ -16,9 +16,8 @@ export const ClienteRouter = () => {
     })
 
     return (
-        <>  
+        <>
             <HeaderNav />
-            <hr />
             <section className='seccion-cli'>
                 <Suspense fallback={<div>Cargando....</div>}>
                     <Routes>
@@ -30,7 +29,6 @@ export const ClienteRouter = () => {
                     </Routes>
                 </Suspense>
             </section>
-            <hr />
             <Footer />
         </>
     )

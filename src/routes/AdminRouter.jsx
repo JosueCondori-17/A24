@@ -6,10 +6,9 @@ import { AdminGestionRouter } from './AdminGestionRouter';
 import { AuthContext } from '../context/AuthContext';
 
 export const AdminRouter = () => {
-
-    const { user, logout } = useContext(AuthContext);
     
-
+    const { user, logout } = useContext(AuthContext);
+                               
     return (
         <>
             <section>

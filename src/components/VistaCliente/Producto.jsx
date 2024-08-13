@@ -67,14 +67,14 @@ const Producto = ({ visible, setVisible, itemProducto }) => {
           setVisible(false);
           setIdCarrito(null);
           setCantidad(1);
-        }}>
+        }}
+        header={<h3> {itemProducto?.nombre} </h3>}
+        >
         <div className='panel-producto'>
-          <div className='header-dialog-producto'>
-            <h1> {itemProducto?.nombre} </h1>
-          </div>
+
           <div className='body-dialog-producto'>
             <div style={{ padding: "5px" }} className='body-img-producto'>
-              <img width={"150px"} src={itemProducto?.imagen} alt="img-producto" />
+              <img width={"150px"} src={itemProducto?.url_imagen} alt="img-producto" />
             </div>
             <div style={{ padding: "5px" }} className='body-dato-producto'>
               <div>

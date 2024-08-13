@@ -28,7 +28,7 @@ export const Login = () => {
     };
     useEffect(() => {
         logout();
-    });
+    }, []);
 
     return (
         <>
