@@ -44,8 +44,6 @@ export const Login = () => {
                     <div className='titulo-login'><h1>TUTIENDITA</h1><h1 className='com'>.C<AiFillDollarCircle />M</h1></div>
                     <div>
                         <p className='textoForm'>Inicie sesión para administrar su tienda</p>
-                        <p className='textoForm'>Usuario: john123@example.com</p>
-                        <p className='textoForm'>Contraseña: password1234</p>
                     </div>
                     <input type="email" placeholder='Usuario' value={email} onChange={(e) => setEmail(e.target.value)} />
                     <input type="password" placeholder='Contraseña' value={password} onChange={(e) => setPassword(e.target.value)} />

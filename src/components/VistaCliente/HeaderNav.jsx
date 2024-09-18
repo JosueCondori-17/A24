@@ -7,6 +7,7 @@ import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { useNavigate } from 'react-router-dom';
 
+
 export const HeaderNav = () => {
 
   const { categoriaContext, setCategoriaContext, cantidadCarrito, totalCarrito } = useContext(ClienteContext);
@@ -52,28 +53,6 @@ export const HeaderNav = () => {
   return (
     <>
       <div className='caja'>
-        {/* <div className='header-cli'>
-          <Link to={'/'} className='logo'> A24 STORE</Link>
-          <div className='botones'>
-            <Link className='btn-link' to={'/admin-page/*'}><strong>Panel</strong> </Link>
-            <Link className='btn-link' to={'/carrito'}>
-              <p>S/ {totalCarrito}</p>
-              <i className='pi pi-shopping-cart'></i>
-              <span className={cantidadCarrito> 0 ? 'contador': ""}>{cantidadCarrito > 0 ? cantidadCarrito : null}</span>
-            </Link>
-          </div>
-        </div>
-        <div className='nav' >
-          {categoria.map(categoria => (
-            <NavLink
-              key={categoria.id}
-              className={cateObject?.id === categoria.id ? "activado" : "link"}
-              onClick={() => { obtenerObject(categoria) }}
-              to={`/catalogo/${categoria.label}`} >
-              <p>{categoria.label}</p>
-            </NavLink>
-          ))}
-        </div> */}
         <div className='section-header-left'>
           <h1 style={{ color: "#3a6adb" }}>TUTIENDITA.<strong style={{ color: "white" }}>COM</strong></h1>
         </div>

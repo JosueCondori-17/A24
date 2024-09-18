@@ -42,7 +42,7 @@ const Producto = ({ visible, setVisible, itemProducto }) => {
       id: idCarrito || Date.now(), // Usar idCarrito si existe, de lo contrario generar uno nuevo
       id_producto: itemProducto.id,
       nombre: itemProducto.nombre,
-      image: itemProducto.imagen,
+      image: itemProducto.url_imagen,
       precio: itemProducto.precio,
       cantidad,
       subtotal: itemProducto.precio * cantidad
