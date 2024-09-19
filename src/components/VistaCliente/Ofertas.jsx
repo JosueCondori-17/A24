@@ -52,7 +52,7 @@ import { Link } from 'react-router-dom';
                 </div>
                 <div className='btn-oferta'>
                   <Button className='btn-ver' >Ver</Button>
-                  <Link to={'/compra'} className='btn-comprar'>Comprar</Link>
+                  <Link to={'/tutiendita/compra'} className='btn-comprar'>Comprar</Link>
                 </div>
               </div>
             )

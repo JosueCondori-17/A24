@@ -16,9 +16,9 @@ export const AdminRouter = () => {
                     {user?.access_token ?
                         <Route path='/gestion/*' element={<AdminGestionRouter />} />
                         :
-                        <Route path='/login' element={<Login />} />
+                        <Route path='*' element={<Login />} />
                     }
-                    <Route path='/*' element={<Login />} />
+                    <Route path='*' element={<Login />} />
                 </Routes>
             </section>
         </>

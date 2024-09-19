@@ -124,20 +124,7 @@ export const CrudProducto = () => {
   }, []);
 
   //CRUD- CREAR
-  const [dataAPI, setDataAPI] = useState(null);
-  const getApi = async () => {
-    try {
-      const respuesta = await axios.get("https://rickandmortyapi.com/api/character");
-      console.log("MI DATA", respuesta.data.results);
-      setDataAPI(respuesta.data.results);
-    }
-    catch (error) {
-      console.log("Error al traer data", error);
-    }
-  }
-  useEffect(() => {
-    getApi()
-  }, [])
+
 
   const crearProducto = async () => {
     const formData = new FormData()
@@ -239,7 +226,6 @@ export const CrudProducto = () => {
           className='btn-delete'>
           <i className="pi pi-trash"></i>
         </Button>
-        <button onClick={()=> setVisibleData(true)}>ver data</button>
       </div>
     )
   };
@@ -498,17 +484,6 @@ export const CrudProducto = () => {
             onClick={() => { setVisibleDelete(false); deleteProducto(); deleteCampos() }}>
           </Button>
         </div>
-      </Dialog>
-      <Dialog visible={visibleData} onHide={()=> setVisibleData(false)}>
-                <div>
-                  {dataAPI?.map((item) =>{
-                    return(
-                      <>
-                      <p key={item.id}>{item.name}</p>
-                      </>
-                    )
-                  })}
-                </div>
       </Dialog>
     </>
   )

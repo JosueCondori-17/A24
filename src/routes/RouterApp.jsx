@@ -12,16 +12,17 @@ export const RouterApp = () => {
         <>
 
             <Routes>
-                <Route path='/*' element={
-                    <ClienteProvider>
-                        <ClienteRouter />
-                    </ClienteProvider>
-                } />
-
-                <Route path='/admin-page/*' element={
+                <Route path='*' element={
                     <AuthProvider>
                         <AdminRouter />
                     </AuthProvider>
+
+                } />
+
+                <Route path='/tutiendita/*' element={
+                    <ClienteProvider>
+                        <ClienteRouter />
+                    </ClienteProvider>
                 } />
 
             </Routes>

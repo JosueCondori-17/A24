@@ -39,14 +39,14 @@ export const HeaderNav = () => {
       nombre: obj?.label
     })
     setCateObject(obj);
-    navegar(`/catalogo/${obj?.label}`);
+    navegar(`/tutiendita/catalogo/${obj?.label}`);
   }
 
-  const abrirLogin = () => {
-    navegar('/admin-page/*');
+  const goAdmin = () => {
+    navegar('/gestion/*');
   }
   const irACarrito = () => {
-    navegar('/carrito');
+    navegar('/tutiendita/carrito');
   }
 
 
@@ -64,7 +64,7 @@ export const HeaderNav = () => {
               placeholder="Busca un producto" />
           </div>
           <Link className='link' >Nosotros</Link>
-          <Link className='link' to={'/'}>Ofertas</Link>
+          <Link className='link' to={'/tutiendita/'}>Ofertas</Link>
           <Dropdown
             placeholder='Selecciona una categoría'
             options={categoria}
@@ -74,7 +74,7 @@ export const HeaderNav = () => {
           />
           <div className='box-butons-nav'>
             <i className='pi pi-shopping-cart' onClick={() => irACarrito()}></i>
-            <i className='pi pi-user' onClick={() => abrirLogin()}></i>
+            <i className='pi pi-replay' onClick={() => goAdmin()}></i>
           </div>
         </div>
 

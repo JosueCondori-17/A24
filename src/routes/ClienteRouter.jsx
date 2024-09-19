@@ -11,10 +11,6 @@ import { HeaderNav } from '../components/VistaCliente/HeaderNav';
 
 export const ClienteRouter = () => {
 
-    useEffect(()=>{
-        localStorage.removeItem('user');
-    })
-
     return (
         <>
             <HeaderNav />

@@ -28,12 +28,12 @@ export const HeaderGestion = () => {
             path: 'pedidos',
             option_menu: "Lista de pedidos"
         },
-        {
-            id: 5,
-            icon: 'pi pi-user',
-            path: 'usuario-password',
-            option_menu: "Usuario y Contraseña"
-        }
+        // {
+        //     id: 5,
+        //     icon: 'pi pi-user',
+        //     path: 'usuario-password',
+        //     option_menu: "Usuario y Contraseña"
+        // }
     ]);
 
     const [itemMenuId, setItemMenuId] = useState(0);
@@ -44,7 +44,7 @@ export const HeaderGestion = () => {
             <div className='header-gestion'>
                 {menu.map(item => (
                     <Link key={item.id} 
-                        to={`/admin-page/gestion/${item.path}`} 
+                        to={`/gestion/${item.path}`} 
                         onClick={()=> setItemMenuId(item.id)} 
                         className={itemMenuId=== item.id ? 'activado-g': 'link-g'}>
                         <i className={item.icon}></i>

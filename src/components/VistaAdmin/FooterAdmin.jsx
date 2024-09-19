@@ -11,13 +11,17 @@ export const FooterAdmin = () => {
 
   const cerrarSesion = () => {
     logout();
-    navegar('/admin-page');
+    navegar('/');
+  }
+  const goStore = () => {
+    navegar('/tutiendita/');
   }
 
   return (
     <>
       <div className='footer-container-admin'>
-        <Button className='btn-salir' onClick={() => setVisible(true)} ><i className="pi pi-sign-out"></i><p> Cerrar sesión</p></Button>
+        <Button className='btn-salir' onClick={goStore} label='Tu tienda' icon="pi pi-shop" severity="success" raised/>
+        <Button className='btn-salir' onClick={() => setVisible(true)} label='Cerrar sesión' icon="pi pi-sign-out" />
       </div>
       <Dialog
         style={{ borderRadius: "40px" }}
