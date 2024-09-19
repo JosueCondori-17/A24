@@ -10,22 +10,29 @@ import { Footer } from '../components/VistaCliente/Footer';
 import { HeaderNav } from '../components/VistaCliente/HeaderNav';
 
 export const ClienteRouter = () => {
+    
+    const [user, setUser] = useState(() => {return JSON.parse(localStorage.getItem('user'));});
 
     return (
         <>
-            <HeaderNav />
-            <section className='seccion-cli'>
-                <Suspense fallback={<div>Cargando....</div>}>
-                    <Routes>
-                        <Route path='/' element={<Ofertas />} />
-                        <Route path='/catalogo/:categoria' element={<Catalogo />} />
-                        <Route path='/carrito' element={<AutoCompra />} />
-                        <Route path='/producto' element={<Producto />} />
-                        <Route path='/compra' element={<FinalizarCompra />} />
-                    </Routes>
-                </Suspense>
-            </section>
-            <Footer />
+            {user ?
+                (<>
+                    <HeaderNav />
+                    <section className='seccion-cli'>
+                        <Suspense fallback={<div>Cargando....</div>}>
+                            <Routes>
+                                <Route path='/' element={<Ofertas />} />
+                                <Route path='/catalogo/:categoria' element={<Catalogo />} />
+                                <Route path='/carrito' element={<AutoCompra />} />
+                                <Route path='/producto' element={<Producto />} />
+                                <Route path='/compra' element={<FinalizarCompra />} />
+                            </Routes>
+                        </Suspense>
+                    </section>
+                    <Footer />
+                </>) : <div>inicia sesión</div>
+            }
+
         </>
     )
 }

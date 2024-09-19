@@ -11,7 +11,7 @@ export const FooterAdmin = () => {
 
   const cerrarSesion = () => {
     logout();
-    navegar('/');
+    navegar('*');
   }
   const goStore = () => {
     navegar('/tutiendita/');

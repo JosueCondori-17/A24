@@ -29,6 +29,10 @@ export const Login = () => {
     const [estadoEntrada, setEstadoEntrada] = useState(0);
 
     const navegar = useNavigate();
+    
+    useEffect(() => {
+        logout();
+    }, []);
 
     const Login = async () => {
         if (email && password != '') {
@@ -54,11 +58,6 @@ export const Login = () => {
             );
         }
     };
-
-    useEffect(() => {
-        logout();
-    }, []);
-
     const registrar = async () => {
         if (nombre && email && password && passwordConfi != '') {
             if (password.length >= 5 && password == passwordConfi) {
